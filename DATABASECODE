@@ -1,0 +1,85 @@
+Create database groupBuy
+
+Use group Buy
+
+Create table Customer(
+customerID varchar(100) primary key,
+customerForname varchar(10) not null,
+customerSurename varchar(10) not null,
+customerDOB date not null,
+customerEmail varchar(25) not null,
+customerPhoneNum int(11) not null,
+customerAddressOne varchar(20) not null,
+customerAddressTwo varchar(20) not null,
+customerPostcode varchar(10) not null,
+customerCity varchar(40) not null,
+customerCounty varchar(40) not null,
+customerCountry varchar(40) not null);
+
+Create table Supplier(
+supplierID varchar(100) primary key,
+supplierName varchar(50) not null,
+supplierPhoneNum int(11) not null,
+supplierEmail varchar(25) not null,
+supplierAddressOne varchar(20) not null,
+supplierAddressTwo varchar(20) not null,
+supplierPostcode varchar(10) not null,
+supplierCity varchar(40) not null,
+supplierCounty varchar(40) not null,
+supplierCountry varchar(40) not null);
+
+Create table Category(
+categoryID varchar(100) primary key,
+categoryName varchar(25) not null,
+categoryDescription varchar(150) not null);
+
+Create table Product(
+productID varchar(100) primary key,
+supplierID varchar(100),
+productCost decimal(5,2) not null,
+productStock int not null,
+productDescription varchar(150) not null,
+productImgOne varchar(100) not null,
+productImgTwo varchar(100) not null,
+productImgThree varchar(100) not null,
+productImgFour varchar(100) not null,
+foreign key (supplierID) references Supplier(supplierID));
+
+
+Create table productNotify(
+customerID varchar(100),
+productID varchar(100),
+foreign key (customerID) references Customer(customerID),
+foreign key (productID) references Product(productID));
+
+Create table Order_customer(
+orderID varchar(100) primary key,
+customerID varchar(100),
+productID varchar(100),
+productQuantity int not null,
+orderDate datetime not null,
+orderCost decimal(5,2) not null,
+foreign key (customerID) references Customer(customerID),
+foreign key (productID) references Product(productID));
+
+Create table Invoice(
+invoiceID varchar(100) primary key, 
+invoiceDate datetime not null, 
+orderID varchar(100),
+invoiceCost decimal(5,2) not null,
+foreign key (orderID) references Order_customer(orderID));
+
+Create table productCategory(
+categoryID varchar(100),
+productID varchar(100),
+foreign key (categoryID) references Category(categoryID),
+foreign key (productID) references Product(productID));
+
+Create table productDiscount(
+productDiscountID varchar(100) primary key, 
+productID varchar(100), 
+discountCap decimal(5,2) not null,
+discountPerCust decimal(5,2) not null,
+unitsSold int not null,
+currentDiscount decimal (5,2) not null,
+foreign key (productID) references Product(productID));
